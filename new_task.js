@@ -14,10 +14,11 @@ amqp.connect('amqp://localhost', function(error0, connection) {
     var msg = process.argv.slice(2).join(' ') || "Hello World!";
 
     channel.assertQueue(queue, {
-      // save message to disk on worker
+      // to not lose message incase of server crash
       durable: true
     });
     channel.sendToQueue(queue, Buffer.from(msg), {
+      // save the message to disk on worker
       persistent: true
     });
     console.log(" [x] Sent '%s'", msg);
